@@ -118,7 +118,7 @@ Pastikan Anda sudah menginstal software berikut sebelum memulai proyek:
    b. **Lakulan Docker Pull**
    ```bash
    docker run -d -p 5173:5173 suryaaaulia/react_image:latest
-   dll
+   # dan image lainnya
    ```
 
 7. **Menjalankan Kontainer Image**
