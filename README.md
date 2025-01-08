@@ -108,6 +108,39 @@ Pastikan Anda sudah menginstal software berikut sebelum memulai proyek:
    python app.py
    ```
 
+5. **Pull Docker Image**
+
+   a. **Pastikan di Folder Utama Project**
+   ```bash
+   cd MySkin-DevOps
+   ```
+
+   b. **Lakulan Docker Pull**
+   ```bash
+   docker run -d -p 5173:5173 suryaaaulia/react_image:latest
+   dll
+   ```
+
+7. **Menjalankan Kontainer Image**
+
+   a. **Pastikan di Folder Utama Project**
+   ```bash
+   cd MySkin-DevOps
+   ```
+
+   b. **Menjalankan Docker Compose**
+   ```bash
+   docker compose build -d
+   ```
+
+   c. **Check Container yang Berjalan**
+   ```bash
+   docker ps
+   ```
+
+   d. **Buka Endpoint yang Ingin dibuka**
+   Copy paste endpoint ke web browser
+
 ### Testing Requirements
 
 - **Frontend Testing (React)**: Menggunakan **Jest**
