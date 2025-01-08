@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+          
+    laravel-app:
+            
+    react-app:
+    
+    flask-app:
+
+    phpmyadmin:
+
+    mysql:
+
+    redis:
