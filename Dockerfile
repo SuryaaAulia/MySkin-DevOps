@@ -37,7 +37,8 @@ COPY --from=composer:2.6.5 /usr/bin/composer /usr/bin/composer
 ENV PORT=8000
 
 RUN composer install --no-progress --no-interaction && \
-    
+    php artisan migrate:fresh && \
+    php artisan db:seed --class="database\seeders\DatabaseSeeder" && \
     php artisan key:generate
 
 CMD ["php", "artisan", "serve", "--port=8000", "--host=0.0.0.0", "--env=.env"]
