@@ -35,7 +35,7 @@ class SkinAnalysisController extends Controller
             //     ]
             // ]);
 
-            $response = $client->post('http://127.0.0.1:7000/predict', [
+            $response = $client->post('http://flask-app:7000/predict', [
                 'multipart' => [
                     [
                         'name'     => 'image',

@@ -2,11 +2,7 @@ version: '3.8'
 
 services:
   laravel-app:
-    build: 
-      context: .
-      target: php
-      dockerfile: Dockerfile
-    container_name: laravel_app
+    image: suryaaaulia/laravel_image:latest
     restart: always
     ports:
       - '8000:8000'
@@ -28,7 +24,7 @@ services:
     container_name: react_app
     restart: always
     ports:
-      - '3000:3000'
+      - '5173:5173'
     environment:
       - REACT_APP_API_URL=http://laravel-app:8000
     depends_on:
@@ -39,12 +35,7 @@ services:
     container_name: flask_app
     restart: always
     ports:
-      - '5000:5000'
-    environment:
-      - FLASK_APP=app.py
-      - FLASK_ENV=production
-    depends_on:
-      - laravel-app
+      - '7000:7000'
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -79,5 +70,5 @@ services:
       - REDIS_PASSWORD=root
 
 volumes:
-  db-data:
+  db-data: ~
 

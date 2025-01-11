@@ -31,14 +31,23 @@ RUN pecl install -o -f redis \
     && docker-php-ext-enable redis
 
 WORKDIR /var/www
+
 COPY . .
+
+
 COPY --from=composer:2.6.5 /usr/bin/composer /usr/bin/composer
 
-ENV PORT=8000
+#RUN composer install && \
+    #cp .env.example .env && \
+    #php artisan key:generate && \
+    #php artisan migrate && \
+    #php artisan db:seed --class=DatabaseSeeder
 
-RUN composer install --no-progress --no-interaction && \
-    php artisan migrate:fresh && \
-    php artisan db:seed --class="database\seeders\DatabaseSeeder" && \
-    php artisan key:generate
 
-CMD ["php", "artisan", "serve", "--port=8000", "--host=0.0.0.0", "--env=.env"]
+#CMD ["php", "artisan", "serve", "--port=8000", "--host=0.0.0.0", "--env=.env"]
+
+COPY phpentrypoint.sh ./phpentrypoint.sh
+
+RUN chmod +x ./phpentrypoint.sh
+
+CMD ["bash", "./phpentrypoint.sh"]
