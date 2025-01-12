@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://0.0.0.0:5000'],
+    'allowed_origins' => [env('APP_URL')],
 
     'allowed_origins_patterns' => [],
 

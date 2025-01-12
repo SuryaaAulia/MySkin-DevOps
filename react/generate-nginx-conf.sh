@@ -5,7 +5,12 @@ if [ -z "$CUSTOM_PROXY_PASS" ]; then
     exit 1
 fi
 
-envsubst '${CUSTOM_PROXY_PASS}' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf
+if [ -z "$CUSTOM_ALLOWED_ORIGIN" ]; then
+    echo "Error: CUSTOM_ALLOWED_ORIGIN environment variable is not set."
+    exit 1
+fi
+
+envsubst '${CUSTOM_PROXY_PASS},${CUSTOM_ALLOWED_ORIGIN}' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf
 
 echo "Generated /etc/nginx/nginx.conf:"
 cat /etc/nginx/nginx.conf
