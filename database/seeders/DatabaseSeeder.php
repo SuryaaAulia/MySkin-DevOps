@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use App\Models\Admin;
 use App\Models\Doctor;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,7 +16,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $maxRetries = 5; // Number of retries
+	    $retryDelay = 5; // Seconds between retries
+	    $retries = 0;
+
+	    while ($retries < $maxRetries) {
+		try {
+		    if (DB::table('users')->exists()) {
+		        $this->command->info('Database is already seeded. No action taken.');
+		        return;
+		    }
+		    break; // Exit loop if successful
+		} catch (\Exception $e) {
+		    $retries++;
+		    $this->command->warn("Database connection not ready. Retrying in {$retryDelay} seconds... ($retries/$maxRetries)");
+		    sleep($retryDelay);
+		}
+	    }
+
+	    if ($retries === $maxRetries) {
+		$this->command->error('Could not connect to the database. Seeding aborted.');
+		return;
+	    }
 
         User::create([
             'firstName' => 'Zaky',
@@ -36,7 +57,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123'),
             'verified' => true,
             'birthdate' => '2003-05-05',
-            'profile_picture_path' => 'images/doctor/default.jpg'
+            'profile_picture_path' => 'images/doctor/default.jpg',
         ]);
 
         $faker = Faker::create();
@@ -49,10 +70,9 @@ class DatabaseSeeder extends Seeder
                 'password' => bcrypt('123'),
                 'verified' => true,
                 'birthdate' => $faker->date(),
-                'profile_picture_path' => 'images/doctor/default.jpg'
+                'profile_picture_path' => 'images/doctor/default.jpg',
             ]);
         }
-
 
         Admin::create([
             'firstName' => 'Zaky',
@@ -61,5 +81,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'mzakyf@admin.myskin.ac.id',
             'password' => bcrypt('123'),
         ]);
+
+        $this->command->info('Database seeding completed.');
     }
 }
+

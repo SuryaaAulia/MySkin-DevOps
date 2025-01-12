@@ -3,8 +3,8 @@ version: '3.8'
 services:
   laravel-app:
     build:
-      context: .
-      dockerfile: Dockerfile
+        context: .
+        dockerfile: Dockerfile
     container_name: laravel_app
     restart: always
     ports:
@@ -26,14 +26,15 @@ services:
 
   react-app:
     build:
-      context: ./react
-      dockerfile: Dockerfile
+       context: ./react
     container_name: react_app
     restart: always
     ports:
       - '5000:80'
     networks:
       - app_network
+    environment:
+      - CUSTOM_PROXY_PASS=http://localhost:8000
 
   flask-app:
     image: suryaaaulia/flask_image:latest
