@@ -8,13 +8,17 @@ if [ ! -f ".env" ]; then
     cp .env.example .env
 fi
 
-if ! php artisan tinker --execute="DB::table('users')->exists() || DB::table('doctors')->exists();" > /dev/null 2>&1; then
-    echo "Database is empty, seeding..."
-    sleep 10 && php artisan migrate
-    sleep 10 && php artisan db:seed --class=DatabaseSeeder
+php artisan:key generate
+
+MIGRATIONS=$(php artisan migrate:status | grep -c "Migrating and Seeding Data")
+if [ "$MIGRATIONS" -gt 0 ]; then
+  php artisan migrate
+  php artisan db:seed --class=DatabaseSeeder
 else
-    echo "Database is already seeded dawgg."
+  echo "Migrations already applied & Seeded"
 fi
 
 php artisan serve --port=8000 --host=0.0.0.0 --env=.env
+
 exec docker-php-entrypoint "$@"
+

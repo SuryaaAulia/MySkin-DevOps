@@ -35,15 +35,16 @@ class SkinAnalysisController extends Controller
             //     ]
             // ]);
 
-            $response = $client->post('http://flask-app:7000/predict', [
-                'multipart' => [
-                    [
-                        'name'     => 'image',
-                        'contents' => fopen($image->getPathname(), 'r'),
-                        'filename' => $image->getClientOriginalName()
-                    ]
-                ]
-            ]);
+            $response = $client->post(env('FLASK_URL') . '/predict', [
+		    'multipart' => [
+			[
+			    'name'     => 'image',
+			    'contents' => fopen($image->getPathname(), 'r'),
+			    'filename' => $image->getClientOriginalName()
+			]
+		    ]
+		]);
+
 
             $responseData = json_decode($response->getBody(), true);
             if (isset($responseData['prediction'])) {
